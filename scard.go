@@ -31,8 +31,12 @@ type Card struct {
 }
 
 // wraps SCardEstablishContext
-func EstablishContext() (*Context, error) {
-	ctx, r := scardEstablishContext(ScopeSystem, 0, 0)
+func EstablishContext(scope ...Scope) (*Context, error) {
+	scp := ScopeSystem
+	if len(scope) > 0 {
+		scp = scope[0]
+	}
+	ctx, r := scardEstablishContext(scp, 0, 0)
 	if r != ErrSuccess {
 		return nil, r
 	}
